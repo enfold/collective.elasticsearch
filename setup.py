@@ -27,7 +27,8 @@ setup(name='collective.elasticsearch',
           'setuptools',
           'pyes',
           'plone.app.registry',
-          'five.globalrequest'
+          'five.globalrequest',
+          'z3c.jbot',
       ],
       entry_points="""
       # -*- Entry points: -*-

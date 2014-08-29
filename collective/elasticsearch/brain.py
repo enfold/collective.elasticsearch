@@ -5,5 +5,10 @@ def BrainFactory(catalog):
         path = result.get('path', {}).get('path', None)
         if path:
             rid = catalog.uids.get(path)
-            return catalog[rid]
+            brain = catalog[rid]
+            meta = result.get_meta()
+            if 'highlight' in meta and 'SearchableText' in meta['highlight']:
+                highlights = meta['highlight']['SearchableText']
+                brain.eshighlight = highlights
+            return brain
     return factory

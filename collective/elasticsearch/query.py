@@ -1,6 +1,7 @@
 from collective.elasticsearch.indexes import getIndex
 from pyes import (MatchAllQuery, ANDFilter, FilteredQuery)
-
+from pyes import HighLighter
+from pyes import Search
 
 class QueryAssembler(object):
 
@@ -52,7 +53,12 @@ class QueryAssembler(object):
                 query = qq
             else:
                 filters.append(qq)
-        if len(filters) == 0:
-            return query
+        if len(filters) != 0:
+            query = FilteredQuery(query, ANDFilter(filters))
+
+        if 'SearchableText' in dquery:
+            hl = HighLighter(pre_tags=['<b>'], post_tags=['</b>'])
+            hl.add_field('SearchableText')
+            return Search(query, highlight=hl)
         else:
-            return FilteredQuery(query, ANDFilter(filters))
+            return query
